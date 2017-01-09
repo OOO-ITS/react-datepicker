@@ -117,6 +117,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    excludeDates: _react2.default.PropTypes.array,
 	    filterDate: _react2.default.PropTypes.func,
 	    fixedHeight: _react2.default.PropTypes.bool,
+	    handleSelectedCellClick: _react2.default.PropTypes.bool,
 	    highlightDates: _react2.default.PropTypes.array,
 	    id: _react2.default.PropTypes.string,
 	    includeDates: _react2.default.PropTypes.array,
@@ -237,7 +238,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  setSelected: function setSelected(date, event) {
 	    var changedDate = date;
 
-	    if (!(0, _date_utils.isSameDay)(this.props.selected, changedDate)) {
+	    if (!(0, _date_utils.isSameDay)(this.props.selected, changedDate) || this.props.handleSelectedCellClick) {
 	      if (this.props.selected && changedDate != null) {
 	        changedDate = (0, _moment2.default)(changedDate).set({
 	          hour: this.props.selected.hour(),

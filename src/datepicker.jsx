@@ -34,6 +34,7 @@ var DatePicker = React.createClass({
     excludeDates: React.PropTypes.array,
     filterDate: React.PropTypes.func,
     fixedHeight: React.PropTypes.bool,
+    handleSelectedCellClick: React.PropTypes.bool,
     highlightDates: React.PropTypes.array,
     id: React.PropTypes.string,
     includeDates: React.PropTypes.array,
@@ -157,7 +158,7 @@ var DatePicker = React.createClass({
   setSelected (date, event) {
     let changedDate = date
 
-    if (!isSameDay(this.props.selected, changedDate)) {
+    if (!isSameDay(this.props.selected, changedDate) || this.props.handleSelectedCellClick) {
       if (this.props.selected && changedDate != null) {
         changedDate = moment(changedDate).set({
           hour: this.props.selected.hour(),
