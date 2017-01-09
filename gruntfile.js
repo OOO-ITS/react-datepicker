@@ -141,5 +141,5 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', ['watch', 'scsslint'])
   grunt.registerTask('travis', ['eslint', 'karma', 'scsslint'])
-  grunt.registerTask('build', ['scsslint', 'babel', 'webpack', 'sass'])
+  grunt.registerTask('build', ['babel', 'webpack'])
 }
