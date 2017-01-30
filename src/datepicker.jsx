@@ -218,8 +218,6 @@ var DatePicker = React.createClass({
   },
 
   renderCalendar () {
-    if (this.props.inline) console.log('render calendar', this.props)
-
     if (!this.props.inline && (!this.state.open || this.props.disabled)) {
       return null
     }
