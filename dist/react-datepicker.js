@@ -294,8 +294,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.props.onChange(null, event);
 	  },
 	  renderCalendar: function renderCalendar() {
-	    if (this.props.inline) console.log('render calendar', this.props);
-
 	    if (!this.props.inline && (!this.state.open || this.props.disabled)) {
 	      return null;
 	    }
@@ -5975,8 +5973,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return (0, _date_utils.isSameDay)(day, highlight.date);
 	    });
 
-	    // console.log('RDP | get highlightType', day, type, highlightType)
-
 	    return type ? type.name : '';
 	  },
 	  handleClick: function handleClick(event) {
@@ -6103,7 +6099,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _classnames;
 
 	    var type = this.getHighlightType();
-	    // console.log('RDP | highlightType', type)
 
 	    return (0, _classnames3.default)('react-datepicker__day', (_classnames = {
 	      'react-datepicker__day--disabled': this.isDisabled(),
