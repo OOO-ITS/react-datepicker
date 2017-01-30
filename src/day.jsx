@@ -10,6 +10,7 @@ var Day = React.createClass({
     day: React.PropTypes.object.isRequired,
     endDate: React.PropTypes.object,
     highlightDates: React.PropTypes.array,
+    highlightType: React.PropTypes.array,
     month: React.PropTypes.number,
     onClick: React.PropTypes.func,
     onMouseEnter: React.PropTypes.func,
@@ -25,6 +26,14 @@ var Day = React.createClass({
       utcOffset: moment.utc().utcOffset()
     }
   },
+
+  getHighlightType() {
+    const { day, highlightType = [] } = this.props
+    const type = highlightType.find(highlight => isSameDay(day, highlight.date))
+
+    return type ? type.name : ''
+  },
+
   handleClick (event) {
     if (!this.isDisabled() && this.props.onClick) {
       this.props.onClick(event)
@@ -126,10 +135,13 @@ var Day = React.createClass({
   },
 
   getClassNames () {
+    const type = this.getHighlightType()
+
     return classnames('react-datepicker__day', {
       'react-datepicker__day--disabled': this.isDisabled(),
       'react-datepicker__day--selected': this.isSameDay(this.props.selected),
       'react-datepicker__day--highlighted': this.isHighlighted(),
+      [`react-datepicker__day--highlighted-${type}`]: !!type,
       'react-datepicker__day--range-start': this.isRangeStart(),
       'react-datepicker__day--range-end': this.isRangeEnd(),
       'react-datepicker__day--in-range': this.isInRange(),

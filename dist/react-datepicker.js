@@ -119,6 +119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    fixedHeight: _react2.default.PropTypes.bool,
 	    handleSelectedCellClick: _react2.default.PropTypes.bool,
 	    highlightDates: _react2.default.PropTypes.array,
+	    highlightType: _react2.default.PropTypes.array,
 	    id: _react2.default.PropTypes.string,
 	    includeDates: _react2.default.PropTypes.array,
 	    inline: _react2.default.PropTypes.bool,
@@ -293,6 +294,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.props.onChange(null, event);
 	  },
 	  renderCalendar: function renderCalendar() {
+	    if (this.props.inline) console.log('render calendar', this.props);
+
 	    if (!this.props.inline && (!this.state.open || this.props.disabled)) {
 	      return null;
 	    }
@@ -314,6 +317,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      filterDate: this.props.filterDate,
 	      onClickOutside: this.handleCalendarClickOutside,
 	      highlightDates: this.props.highlightDates,
+	      highlightType: this.props.highlightType,
 	      includeDates: this.props.includeDates,
 	      peekNextMonth: this.props.peekNextMonth,
 	      showMonthDropdown: this.props.showMonthDropdown,
@@ -693,6 +697,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    filterDate: _react2.default.PropTypes.func,
 	    fixedHeight: _react2.default.PropTypes.bool,
 	    highlightDates: _react2.default.PropTypes.array,
+	    highlightType: _react2.default.PropTypes.array,
 	    includeDates: _react2.default.PropTypes.array,
 	    locale: _react2.default.PropTypes.string,
 	    maxDate: _react2.default.PropTypes.object,
@@ -957,6 +962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          maxDate: this.props.maxDate,
 	          excludeDates: this.props.excludeDates,
 	          highlightDates: this.props.highlightDates,
+	          highlightType: this.props.highlightType,
 	          selectingDate: this.state.selectingDate,
 	          includeDates: this.props.includeDates,
 	          fixedHeight: this.props.fixedHeight,
@@ -5705,6 +5711,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    filterDate: _react2.default.PropTypes.func,
 	    fixedHeight: _react2.default.PropTypes.bool,
 	    highlightDates: _react2.default.PropTypes.array,
+	    highlightType: _react2.default.PropTypes.array,
 	    includeDates: _react2.default.PropTypes.array,
 	    maxDate: _react2.default.PropTypes.object,
 	    minDate: _react2.default.PropTypes.object,
@@ -5760,6 +5767,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        excludeDates: this.props.excludeDates,
 	        includeDates: this.props.includeDates,
 	        highlightDates: this.props.highlightDates,
+	        highlightType: this.props.highlightType,
 	        selectingDate: this.props.selectingDate,
 	        filterDate: this.props.filterDate,
 	        selected: this.props.selected,
@@ -5841,6 +5849,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    excludeDates: _react2.default.PropTypes.array,
 	    filterDate: _react2.default.PropTypes.func,
 	    highlightDates: _react2.default.PropTypes.array,
+	    highlightType: _react2.default.PropTypes.array,
 	    includeDates: _react2.default.PropTypes.array,
 	    maxDate: _react2.default.PropTypes.object,
 	    minDate: _react2.default.PropTypes.object,
@@ -5887,6 +5896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        excludeDates: _this.props.excludeDates,
 	        includeDates: _this.props.includeDates,
 	        highlightDates: _this.props.highlightDates,
+	        highlightType: _this.props.highlightType,
 	        selectingDate: _this.props.selectingDate,
 	        filterDate: _this.props.filterDate,
 	        selected: _this.props.selected,
@@ -5922,13 +5932,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(130);
+	var _classnames2 = __webpack_require__(130);
 
-	var _classnames2 = _interopRequireDefault(_classnames);
+	var _classnames3 = _interopRequireDefault(_classnames2);
 
 	var _date_utils = __webpack_require__(4);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	var Day = _react2.default.createClass({
 	  displayName: 'Day',
@@ -5937,6 +5949,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    day: _react2.default.PropTypes.object.isRequired,
 	    endDate: _react2.default.PropTypes.object,
 	    highlightDates: _react2.default.PropTypes.array,
+	    highlightType: _react2.default.PropTypes.array,
 	    month: _react2.default.PropTypes.number,
 	    onClick: _react2.default.PropTypes.func,
 	    onMouseEnter: _react2.default.PropTypes.func,
@@ -5951,6 +5964,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	      utcOffset: _moment2.default.utc().utcOffset()
 	    };
+	  },
+	  getHighlightType: function getHighlightType() {
+	    var _props = this.props,
+	        day = _props.day,
+	        _props$highlightType = _props.highlightType,
+	        highlightType = _props$highlightType === undefined ? [] : _props$highlightType;
+
+	    var type = highlightType.find(function (highlight) {
+	      return (0, _date_utils.isSameDay)(day, highlight.date);
+	    });
+
+	    // console.log('RDP | get highlightType', day, type, highlightType)
+
+	    return type ? type.name : '';
 	  },
 	  handleClick: function handleClick(event) {
 	    if (!this.isDisabled() && this.props.onClick) {
@@ -5969,9 +5996,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return (0, _date_utils.isDayDisabled)(this.props.day, this.props);
 	  },
 	  isHighlighted: function isHighlighted() {
-	    var _props = this.props,
-	        day = _props.day,
-	        highlightDates = _props.highlightDates;
+	    var _props2 = this.props,
+	        day = _props2.day,
+	        highlightDates = _props2.highlightDates;
 
 	    if (!highlightDates) return false;
 	    return highlightDates.some(function (testDay) {
@@ -5979,22 +6006,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 	  isInRange: function isInRange() {
-	    var _props2 = this.props,
-	        day = _props2.day,
-	        startDate = _props2.startDate,
-	        endDate = _props2.endDate;
+	    var _props3 = this.props,
+	        day = _props3.day,
+	        startDate = _props3.startDate,
+	        endDate = _props3.endDate;
 
 	    if (!startDate || !endDate) return false;
 	    return (0, _date_utils.isDayInRange)(day, startDate, endDate);
 	  },
 	  isInSelectingRange: function isInSelectingRange() {
-	    var _props3 = this.props,
-	        day = _props3.day,
-	        selectsStart = _props3.selectsStart,
-	        selectsEnd = _props3.selectsEnd,
-	        selectingDate = _props3.selectingDate,
-	        startDate = _props3.startDate,
-	        endDate = _props3.endDate;
+	    var _props4 = this.props,
+	        day = _props4.day,
+	        selectsStart = _props4.selectsStart,
+	        selectsEnd = _props4.selectsEnd,
+	        selectingDate = _props4.selectingDate,
+	        startDate = _props4.startDate,
+	        endDate = _props4.endDate;
 
 
 	    if (!(selectsStart || selectsEnd) || !selectingDate || this.isDisabled()) {
@@ -6016,11 +6043,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return false;
 	    }
 
-	    var _props4 = this.props,
-	        day = _props4.day,
-	        selectingDate = _props4.selectingDate,
-	        startDate = _props4.startDate,
-	        selectsStart = _props4.selectsStart;
+	    var _props5 = this.props,
+	        day = _props5.day,
+	        selectingDate = _props5.selectingDate,
+	        startDate = _props5.startDate,
+	        selectsStart = _props5.selectsStart;
 
 
 	    if (selectsStart) {
@@ -6034,11 +6061,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return false;
 	    }
 
-	    var _props5 = this.props,
-	        day = _props5.day,
-	        selectingDate = _props5.selectingDate,
-	        endDate = _props5.endDate,
-	        selectsEnd = _props5.selectsEnd;
+	    var _props6 = this.props,
+	        day = _props6.day,
+	        selectingDate = _props6.selectingDate,
+	        endDate = _props6.endDate,
+	        selectsEnd = _props6.selectsEnd;
 
 
 	    if (selectsEnd) {
@@ -6048,19 +6075,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  isRangeStart: function isRangeStart() {
-	    var _props6 = this.props,
-	        day = _props6.day,
-	        startDate = _props6.startDate,
-	        endDate = _props6.endDate;
+	    var _props7 = this.props,
+	        day = _props7.day,
+	        startDate = _props7.startDate,
+	        endDate = _props7.endDate;
 
 	    if (!startDate || !endDate) return false;
 	    return (0, _date_utils.isSameDay)(startDate, day);
 	  },
 	  isRangeEnd: function isRangeEnd() {
-	    var _props7 = this.props,
-	        day = _props7.day,
-	        startDate = _props7.startDate,
-	        endDate = _props7.endDate;
+	    var _props8 = this.props,
+	        day = _props8.day,
+	        startDate = _props8.startDate,
+	        endDate = _props8.endDate;
 
 	    if (!startDate || !endDate) return false;
 	    return (0, _date_utils.isSameDay)(endDate, day);
@@ -6073,20 +6100,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.props.month !== undefined && this.props.month !== this.props.day.month();
 	  },
 	  getClassNames: function getClassNames() {
-	    return (0, _classnames2.default)('react-datepicker__day', {
+	    var _classnames;
+
+	    var type = this.getHighlightType();
+	    // console.log('RDP | highlightType', type)
+
+	    return (0, _classnames3.default)('react-datepicker__day', (_classnames = {
 	      'react-datepicker__day--disabled': this.isDisabled(),
 	      'react-datepicker__day--selected': this.isSameDay(this.props.selected),
-	      'react-datepicker__day--highlighted': this.isHighlighted(),
-	      'react-datepicker__day--range-start': this.isRangeStart(),
-	      'react-datepicker__day--range-end': this.isRangeEnd(),
-	      'react-datepicker__day--in-range': this.isInRange(),
-	      'react-datepicker__day--in-selecting-range': this.isInSelectingRange(),
-	      'react-datepicker__day--selecting-range-start': this.isSelectingRangeStart(),
-	      'react-datepicker__day--selecting-range-end': this.isSelectingRangeEnd(),
-	      'react-datepicker__day--today': this.isSameDay(_moment2.default.utc().utcOffset(this.props.utcOffset)),
-	      'react-datepicker__day--weekend': this.isWeekend(),
-	      'react-datepicker__day--outside-month': this.isOutsideMonth()
-	    });
+	      'react-datepicker__day--highlighted': this.isHighlighted()
+	    }, _defineProperty(_classnames, 'react-datepicker__day--highlighted-' + type, !!type), _defineProperty(_classnames, 'react-datepicker__day--range-start', this.isRangeStart()), _defineProperty(_classnames, 'react-datepicker__day--range-end', this.isRangeEnd()), _defineProperty(_classnames, 'react-datepicker__day--in-range', this.isInRange()), _defineProperty(_classnames, 'react-datepicker__day--in-selecting-range', this.isInSelectingRange()), _defineProperty(_classnames, 'react-datepicker__day--selecting-range-start', this.isSelectingRangeStart()), _defineProperty(_classnames, 'react-datepicker__day--selecting-range-end', this.isSelectingRangeEnd()), _defineProperty(_classnames, 'react-datepicker__day--today', this.isSameDay(_moment2.default.utc().utcOffset(this.props.utcOffset))), _defineProperty(_classnames, 'react-datepicker__day--weekend', this.isWeekend()), _defineProperty(_classnames, 'react-datepicker__day--outside-month', this.isOutsideMonth()), _classnames));
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
